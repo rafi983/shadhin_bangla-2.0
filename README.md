@@ -207,7 +207,7 @@ npm run dev
 
 ## 👨‍💻 নির্মাতা
 
-* **ডেভেলপ করেছেন:** [Kamrul Islam Apurba](https://github.com/rafi983)
+* **ডেভেলপ করেছেন:** [Rafi Zaman](https://github.com/rafi983)
 * 📧 **ইমেল:** [rafiirfan211@gmail.com](mailto:rafiirfan211@gmail.com)
 * 🌐 **GitHub:** [github.com/rafi983](https://github.com/rafi983)
 

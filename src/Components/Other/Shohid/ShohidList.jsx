@@ -3,7 +3,7 @@ import { Fade } from "react-awesome-reveal";
 import { BiSearch } from "react-icons/bi";
 import UseAxiosPublic from "../../../Hooks/UseAxiosPublic";
 
-const SohidList = () => {
+const ShohidList = () => {
     const [shohids, setShohids] = useState([]);
     const [filteredShohids, setFilteredShohids] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -163,4 +163,4 @@ const SohidList = () => {
     );
 };
 
-export default SohidList;
+export default ShohidList;

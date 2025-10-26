@@ -69,7 +69,7 @@ shadin-bangla-ui/
 │  ├─ Auth/
 │  ├─ Components/
 │  │  ├─ Fixed/ → Navbar, Footer, ErrorPage
-│  │  └─ Other/ → Blogs, History, Home, Sohid, Tribute
+│  │  └─ Other/ → Blogs, History, Home, Shohid, Tribute
 │  ├─ Layouts/
 │  ├─ Pages/
 │  ├─ Router/

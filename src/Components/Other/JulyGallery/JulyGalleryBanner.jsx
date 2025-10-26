@@ -54,7 +54,7 @@ const JulyGalleryBanner = () => {
                 <div className="flex justify-center md:justify-end mt-8 md:mt-0">
                     <Fade delay={500} triggerOnce>
                         <img
-                            src="/graphys/graphy1.png"
+                            src="/graphyics/graphy1.png"
                             alt="july gallery"
                             className="w-72 sm:w-96 md:w-[420px] drop-shadow-2xl hover:scale-105 transform transition duration-500"
                         />

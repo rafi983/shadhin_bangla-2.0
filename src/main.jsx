@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 
 import { RouterProvider } from "react-router/dom";
-import { router } from "./Router/routs.jsx";
+import { router } from "./Router/routes.jsx";
 import AuthProvider from "./Auth/Providers/AuthProvider.jsx";
 import BackToTop from "./Components/BackToTop/BackToTop.jsx";
 

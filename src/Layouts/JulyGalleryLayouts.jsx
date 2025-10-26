@@ -1,6 +1,6 @@
 import React from 'react'
-import JulyGalleryBanner from '../Components/Other/JulayGallery/JulyGalleryBanner'
-import JulyGalleryGrid from '../Components/Other/JulayGallery/JulyGalleryGrid'
+import JulyGalleryBanner from '../Components/Other/JulyGallery/JulyGalleryBanner'
+import JulyGalleryGrid from '../Components/Other/JulyGallery/JulyGalleryGrid'
 
 const JulyGalleryLayouts = () => {
     return (

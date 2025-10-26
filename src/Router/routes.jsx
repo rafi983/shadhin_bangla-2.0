@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router";
-import RootLayots from "../Layouts/RootLayots";
+import RootLayouts from "../Layouts/RootLayouts.jsx";
 import HomePageLayOut from "../Layouts/HomePageLayOut";
 import ErrorPage from "../Components/Fixed/ErrorPage";
 import BlogPageLayOut from "../Layouts/BlogPageLayOut";
-import SohidPageLayOut from "../Layouts/SohidPageLayOut";
+import ShohidPageLayOut from "../Layouts/ShohidPageLayOut.jsx";
 import JulyGalleryLayouts from "../Layouts/JulyGalleryLayouts";
 import Contact from "../Components/Fixed/Contact";
 import WriteBlog from "../Components/Other/Blogs/WriteBlog";
@@ -15,14 +15,14 @@ import ManageBlogs from "../Components/AdminPage/ManageBlogs";
 import ManageReviews from "../Components/AdminPage/ManageReviews";
 import ManageUsers from "../Components/AdminPage/ManageUsers";
 import ManageShohid from "../Components/AdminPage/ManageShohid";
-import PrivetRout from "../Auth/Privet/Privetrought";
+import PrivetRout from "../Auth/Private/Privateroute.jsx";
 import CustomLoader from "../Components/Fixed/CustomLoader";
 
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <RootLayots />,
+        element: <RootLayouts />,
         errorElement: <ErrorPage />,
         children: [
             {
@@ -60,7 +60,7 @@ export const router = createBrowserRouter([
             // -----------shohid page-------------
             {
                 path: '/shohid',
-                element: <SohidPageLayOut />
+                element: <ShohidPageLayOut />
             },
 
             // -----------------------july gallery--------------

@@ -48,7 +48,7 @@ const HeroSection = () => {
                 <div className="flex justify-center md:justify-end">
                     <Fade delay={400} duration={2000} triggerOnce>
                         <img
-                            src="/graphys/a.png"
+                            src="/graphyics/a.png"
                             alt="Bangladesh Graphic"
                             className="w-[300px] md:w-[600px] drop-shadow-2xl hover:scale-105 transition-transform duration-500"
                         />

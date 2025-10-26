@@ -1,24 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { Fade } from "react-awesome-reveal";
 import { BiSearch } from "react-icons/bi";
+import UseAxiosPublic from "../../../Hooks/UseAxiosPublic";
 
 const SohidList = () => {
     const [shohids, setShohids] = useState([]);
     const [filteredShohids, setFilteredShohids] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const itemsPerPage = 12;
+    const axiosPublic = UseAxiosPublic();
 
     // -------------------Fetch Shohid data
     useEffect(() => {
-        fetch("https://shadin-bangla-2-0-server.vercel.app/Shohid")
-            .then((res) => res.json())
-            .then((data) => {
-                setShohids(data);
-                setFilteredShohids(data);
-            })
-            .catch((err) => console.error("Error fetching Shohid data:", err));
-    }, []);
+        const fetchShohidData = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+                const response = await axiosPublic.get("/Shohid");
+                setShohids(response.data);
+                setFilteredShohids(response.data);
+            } catch (err) {
+                console.error("Error fetching Shohid data:", err);
+                setError("শহীদদের তথ্য লোড করতে সমস্যা হয়েছে। অনুগ্রহ করে পুনরায় চেষ্টা করুন।");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchShohidData();
+    }, [axiosPublic]);
 
     // ---------------- Filter by name (case-insensitive)
     useEffect(() => {
@@ -60,8 +73,28 @@ const SohidList = () => {
 
                 <hr className="border-gray-300 mb-8" />
 
-                {/* ---------------- Shohid Grid ---------------- */}
-                {currentItems.length > 0 ? (
+                {/* ---------------- Loading State ---------------- */}
+                {loading ? (
+                    <div className="flex justify-center items-center min-h-[400px]">
+                        <div className="text-center">
+                            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-red-700 mx-auto mb-4"></div>
+                            <p className="text-gray-600 font-medium">শহীদদের তথ্য লোড হচ্ছে...</p>
+                        </div>
+                    </div>
+                ) : error ? (
+                    /* ---------------- Error State ---------------- */
+                    <div className="flex justify-center items-center min-h-[400px]">
+                        <div className="text-center bg-red-50 border border-red-200 rounded-lg p-8 max-w-md">
+                            <p className="text-red-600 font-medium text-lg mb-4">{error}</p>
+                            <button
+                                onClick={() => window.location.reload()}
+                                className="bg-red-700 text-white px-6 py-2 rounded-md hover:bg-red-800 transition-colors"
+                            >
+                                পুনরায় চেষ্টা করুন
+                            </button>
+                        </div>
+                    </div>
+                ) : currentItems.length > 0 ? (
                     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
                         {currentItems.map((item, index) => (
                             <Fade delay={index * 60} triggerOnce key={item._id}>

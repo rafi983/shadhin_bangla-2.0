@@ -1,22 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import Swal from "sweetalert2";
 import { Fade } from "react-awesome-reveal";
-import { FiHeart } from "react-icons/fi";
 import Marquee from "react-fast-marquee";
 import { Link } from "react-router";
+import UseAxiosPublic from "../../../Hooks/UseAxiosPublic";
 
 const TributeSection = () => {
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const [shohids, setShohids] = useState([]);
+    const axiosPublic = UseAxiosPublic();
 
     // ----------------- Fetch Shohid info from API
     useEffect(() => {
-        fetch("https://shadin-bangla-2-0-server.vercel.app/Shohid")
-            .then((res) => res.json())
-            .then((data) => setShohids(data))
-            .catch((err) => console.error("Shohid fetch error:", err));
-    }, []);
+        const fetchShohids = async () => {
+            try {
+                const response = await axiosPublic.get("/Shohid");
+                setShohids(response.data);
+            } catch (err) {
+                console.error("Shohid fetch error:", err);
+            }
+        };
+
+        fetchShohids();
+    }, [axiosPublic]);
 
 
     return (

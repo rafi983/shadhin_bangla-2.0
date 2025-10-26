@@ -4,6 +4,7 @@ import Marquee from "react-fast-marquee";
 import { Fade } from "react-awesome-reveal";
 import { FaUserCircle, FaQuoteLeft, FaStar } from "react-icons/fa";
 import { AuthContext } from "../../../Auth/Providers/AuthProvider";
+import UseAxiosPublic from "../../../Hooks/UseAxiosPublic";
 
 const GiveReview = () => {
     const { user } = useContext(AuthContext);
@@ -13,19 +14,24 @@ const GiveReview = () => {
         rating: "",
     });
     const [loading, setLoading] = useState(false);
+    const axiosPublic = UseAxiosPublic();
 
     // Fetch approved reviews only
     useEffect(() => {
-        fetch("https://shadin-bangla-2-0-server.vercel.app/reviews")
-            .then((res) => res.json())
-            .then((data) => {
-                const approvedReviews = data
+        const fetchReviews = async () => {
+            try {
+                const response = await axiosPublic.get("/reviews");
+                const approvedReviews = response.data
                     .filter((r) => r.status === "approved")
                     .reverse();
                 setReviews(approvedReviews);
-            })
-            .catch((err) => console.error(err));
-    }, []);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        fetchReviews();
+    }, [axiosPublic]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -71,37 +77,23 @@ const GiveReview = () => {
         };
 
         try {
-            const res = await fetch(
-                "https://shadin-bangla-2-0-server.vercel.app/reviews",
-                {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(reviewData),
-                }
-            );
+            const response = await axiosPublic.post("/reviews", reviewData);
 
-            if (res.ok) {
+            if (response.status === 200 || response.status === 201) {
                 Swal.fire({
                     icon: "success",
                     title: "🎉 ধন্যবাদ!",
-                    text: "আপনার রিভিউ সফলভাবে জমা হয়েছে (অনুমোদনের অপেক্ষায়)।",
+                    text: "আপনার রিভিউ সফলভাবে জমা হয়েছে (অনুমোদনের অপেক্ষায়)।",
                     confirmButtonColor: "#dc2626",
                 });
                 setFormData({ message: "", rating: "" });
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: "❌ ত্রুটি!",
-                    text: "কিছু সমস্যা হয়েছে। আবার চেষ্টা করুন।",
-                    confirmButtonColor: "#dc2626",
-                });
             }
         } catch (error) {
             console.error("Error:", error);
             Swal.fire({
                 icon: "error",
-                title: "⚠️ সার্ভার সংযোগ ব্যর্থ!",
-                text: "সার্ভারের সাথে সংযোগ করা যাচ্ছে না। পরে চেষ্টা করুন।",
+                title: "❌ ত্রুটি!",
+                text: "কিছু সমস্যা হয়েছে। আবার চেষ্টা করুন।",
                 confirmButtonColor: "#dc2626",
             });
         } finally {

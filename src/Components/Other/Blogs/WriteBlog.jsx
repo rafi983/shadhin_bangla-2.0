@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../Auth/Providers/AuthProvider";
+import UseAxiosPublic from "../../../Hooks/UseAxiosPublic";
 
 const WriteBlog = () => {
     const { user } = useContext(AuthContext); // 🔐 ইউজার কনটেক্সট
@@ -24,6 +25,7 @@ const WriteBlog = () => {
     });
 
     const [loading, setLoading] = useState(false);
+    const axiosPublic = UseAxiosPublic();
 
     const handleChange = (e) => {
         setFormData({
@@ -45,7 +47,7 @@ const WriteBlog = () => {
             Swal.fire({
                 icon: "warning",
                 title: "⚠️ বিভাগ নির্বাচন করুন",
-                text: "দয়া করে একটি ক্যাটাগরি নির্বাচন করুন।",
+                text: "দয়া করে একটি ক্যাটাগরি নির্বাচন করুন।",
                 confirmButtonColor: "#dc2626",
             });
             return;
@@ -54,19 +56,13 @@ const WriteBlog = () => {
         setLoading(true);
 
         try {
-            const response = await fetch("https://shadin-bangla-2-0-server.vercel.app/Blogs", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(blogData),
-            });
+            const response = await axiosPublic.post("/Blogs", blogData);
 
-            if (response.ok) {
+            if (response.status === 200 || response.status === 201) {
                 Swal.fire({
                     icon: "success",
                     title: "🎉 ধন্যবাদ!",
-                    text: "আপনার ব্লগটি জমা হয়েছে এবং অনুমোদনের অপেক্ষায় আছে।",
+                    text: "আপনার ব্লগটি জমা হয়েছে এবং অনুমোদনের অপেক্ষায় আছে।",
                     confirmButtonColor: "#dc2626",
                 });
                 setFormData({
@@ -76,20 +72,13 @@ const WriteBlog = () => {
                     category: "",
                     content: "",
                 });
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: "❌ ত্রুটি!",
-                    text: "কিছু সমস্যা হয়েছে। আবার চেষ্টা করুন।",
-                    confirmButtonColor: "#dc2626",
-                });
             }
         } catch (error) {
-            console.error("Error:", error);
+            console.error("Error submitting blog:", error);
             Swal.fire({
                 icon: "error",
-                title: "⚠️ সংযোগ ব্যর্থ!",
-                text: "সার্ভারের সাথে সংযোগ করা যাচ্ছে না। পরে চেষ্টা করুন।",
+                title: "❌ ত্রুটি!",
+                text: "কিছু সমস্যা হয়েছে। আবার চেষ্টা করুন।",
                 confirmButtonColor: "#dc2626",
             });
         } finally {

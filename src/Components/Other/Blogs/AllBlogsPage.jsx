@@ -3,6 +3,7 @@ import { Fade } from "react-awesome-reveal";
 import { Link } from "react-router-dom";
 import { FaArrowRight, FaCalendarAlt, FaSearch } from "react-icons/fa";
 import CustomLoader from "../../Fixed/CustomLoader";
+import UseAxiosPublic from "../../../Hooks/UseAxiosPublic";
 
 const AllBlogsPage = () => {
     const [blogs, setBlogs] = useState([]);
@@ -10,25 +11,24 @@ const AllBlogsPage = () => {
     const [selectedCategory, setSelectedCategory] = useState("all");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const axiosPublic = UseAxiosPublic();
 
     // --------------------- Fetch Blogs from Backend--------------
     useEffect(() => {
         const fetchBlogs = async () => {
             try {
-                const response = await fetch("https://shadin-bangla-2-0-server.vercel.app/Blogs");
-                if (!response.ok) throw new Error("Failed to load blogs");
-                const data = await response.json();
-                setBlogs(data);
+                const response = await axiosPublic.get("/Blogs");
+                setBlogs(response.data);
             } catch (err) {
                 console.error("Error loading blogs:", err);
-                setError("ব্লগ লোড করতে সমস্যা হয়েছে। পরে আবার চেষ্টা করুন।");
+                setError("ব্লগ লোড করতে সমস্যা হয়েছে। পরে আবার চেষ্টা করুন।");
             } finally {
                 setLoading(false);
             }
         };
 
         fetchBlogs();
-    }, []);
+    }, [axiosPublic]);
 
     const categories = ["all", ...new Set(blogs.map((blog) => blog.category))];
 

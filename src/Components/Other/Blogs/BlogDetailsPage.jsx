@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { Fade } from "react-awesome-reveal";
 import { FaCalendarAlt, FaUserAlt, FaTag, FaArrowLeft } from "react-icons/fa";
 import CustomLoader from "../../Fixed/CustomLoader";
+import UseAxiosPublic from "../../../Hooks/UseAxiosPublic";
 
 const BlogDetailsPage = () => {
     const { id } = useParams();
@@ -10,32 +11,32 @@ const BlogDetailsPage = () => {
     const [relatedBlogs, setRelatedBlogs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const axiosPublic = UseAxiosPublic();
 
     // ---------- Fetch selected blog + related blogs ----------
     useEffect(() => {
         const fetchBlogData = async () => {
             try {
-                const res = await fetch(`https://shadin-bangla-2-0-server.vercel.app/Blogs/${id}`);
-                if (!res.ok) throw new Error("Failed to load blog");
-                const data = await res.json();
+                const response = await axiosPublic.get(`/Blogs/${id}`);
+                const data = response.data;
                 setBlog(data);
 
                 // ---------- Fetch related blogs ----------
-                const allRes = await fetch(`https://shadin-bangla-2-0-server.vercel.app/Blogs`);
-                const allData = await allRes.json();
+                const allResponse = await axiosPublic.get(`/Blogs`);
+                const allData = allResponse.data;
                 const related = allData.filter(
                     (b) => b.category === data.category && b._id !== data._id
                 );
                 setRelatedBlogs(related);
             } catch (err) {
                 console.error(err);
-                setError("ব্লগ লোড করতে সমস্যা হয়েছে। পরে আবার চেষ্টা করুন।");
+                setError("ব্লগ লোড করতে সমস্যা হয়েছে। পরে আবার চেষ্টা করুন।");
             } finally {
                 setLoading(false);
             }
         };
         fetchBlogData();
-    }, [id]);
+    }, [id, axiosPublic]);
 
     if (loading) {
         return (
